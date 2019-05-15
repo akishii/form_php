@@ -2,15 +2,16 @@
 session_start();
 
 $_SESSION["post"] = $_POST;
+$data = $_POST;  //不必要？
 
 $name = "";
 $email = "";
 
 if ( isset( $_POST["name"] ) == true ) {
-	$name = htmlspecialchars( $_POST["name"], ENT_QUOTES );
+	$name = htmlspecialchars( $_POST["name"], ENT_QUOTES, 'UTF-8');
 }
 if ( isset( $_POST["email"] ) == true ) {
-	$email = htmlspecialchars( $_POST["email"], ENT_QUOTES );
+	$email = htmlspecialchars( $_POST["email"], ENT_QUOTES, 'UTF-8');
 }
 ?>
 
@@ -22,7 +23,7 @@ if ( isset( $_POST["email"] ) == true ) {
 <body>
     <div class="main">
         <h2 class="confirm-title">内容確認画面</h2>
-            <div class="confirm-item">◆名前　<?php echo $_POST['name']; ?></div>
+            <div class="confirm-item">◆名  前　<?php echo $_POST['name']; ?></div>
             <div class="confirm-item">◆E-mail　<?php echo $_POST['email']; ?></div>
             <div calss="confirm-btn">
             <div class="back-btn">
