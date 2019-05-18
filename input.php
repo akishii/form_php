@@ -1,37 +1,29 @@
 <?php
+
+$error1 = '';
+$error2 = ''; 
+$error3 = ''; 
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {  //送信ボタン押下
+    $name = $_POST["name"];
+    
+    if ($_POST["name"] == null) { //nameが入力されていない
+      $error1 = "名前が入力されてません";  // 処理を記述                
+      }
+
+    if ($_POST["name"] != null && mb_strlen($name) >= 10) { //nameが入力されている                            
+      $error2 = "10文字以上入力されています";  // 処理を記述
+      }           
+    
+    if ($_POST["email"] == null) {  //emailが入力されていない
+      $email = $_POST["email"];   
+      $error3 = "E-mailが入力されてません";  // 処理を記述
+    }    
+    //if (name,emailともに入力されている) {
+         // confirm.phpに推移させる処理を記述
+    //}
+ }
  
- $page_flag = 0;　//_page_flagは使わない？
- $clean = array();
- $error = array();
- 
-   //サニタイズ　　←課題ではないから必要ない？
-  if (!empty($_POST)) {
-    foreach ($_POST as $key => $value) {
-      $clean[$key] = htmlspecialchars($value, ENT_QUOTES, 'utf-8');
-    }
-  }
-  
-  //バリデーション
-  function validation ($data) {  
-  
-    //$data=$_POSTがブランクだったらメッセージを表示
-  if (empty($data['name'])) {
-    $error['name'] = "名前を入力してください";
-  }
-
-  if (empty($data['email'])) {
-    $error['email'] = "住所を入力してください";
-  }
-  return $error;
-}
-
-  //エラーがあったら入力画面から移動しない
-if　(!empty($error) ) {
-  $page_flag = 0;
-} else {
-  $page_flag = 1;
-}
-
 session_start();
 
 $name = "";
@@ -47,6 +39,7 @@ if ( isset($_SESSION["post"]) == true ) {
   }
   unset($_SESSION["post"]);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -55,18 +48,21 @@ if ( isset($_SESSION["post"]) == true ) {
     <meta charset="utf-8"> 
 </head>
 <body>
+    <!--
+    エラーメッセージがあった場合にここに表示する
+    -->
     <div class="main">
         <h2 class="form-title">お問い合わせフォーム</h2>
-          <form method="post" action="confirm.php">
+          <form method="post" action="input.php">
             <div class="form-item">名前</div>
               <!--$errorがあったらメッセージを表示-->
-            <input type="text" name="name" value="<?php echo $name; ?>">
-            <p><?php if(isset($error['name'])) echo $error["name"]; ?></p>
+              <div><?php echo $error1; ?></div>
+              <div><?php echo $error2; ?></div>
+            <input type="text" name="name">
             <div class="form-item">E-mail</div>
-            <input type="text" name="email" value="<?php echo $email; ?>">
-            <p><?php if(isset($error['email'])) echo $error['email']; ?></p>
-            <div class="form-btn"> 
-              <input type="submit" value="送信">
+              <div><?php echo $error3; ?></div>
+            <input type="text" name="email">
+            <input type="submit" value="送信">
             </div>          
           </form>
     </div>
