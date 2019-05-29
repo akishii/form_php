@@ -1,7 +1,22 @@
 <?php 
 require_once ('validation.php');
-	$errorName[] = '';
-	$errorEmail[] = '';
+
+$errorName[] = '';
+$errorEmail[] = '';
+
+
+  
+  //送信ボタンが押下されたら
+if (isset($_POST["send_data"]) && $_POST["send_data"] === "入力情報") {
+  
+      //エラーがなければ確認画面へ
+    if (validation_name($name) == false &&
+      validation_email($email) == false)
+      {
+      header('Location: confirm.php');
+      exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +42,7 @@ require_once ('validation.php');
 		  <div>
 		  <?php foreach((array)$errorEmail as $value): ?>
 		  <?php if(!empty($value)): ?>
-		  <div><?php print_r($value); ?></div>
+		  <div><?php echo $value[0]; ?></div>
 		  <?php else: ?>
 		  <div><?php break; ?></div>
 		  <?php endif ?>
