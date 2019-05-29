@@ -1,38 +1,55 @@
 <?php
 session_start();
 
-$error1 = '';
-$error2 = '';
-$error3 = '';
-
-
-if (isset($_POST["send_data"]) && $_POST["send_data"] === "12345") {  //送信ボタン押下
+//送信ボタンが押下されたら
+if (isset($_POST["send_data"]) && $_POST["send_data"] === "入力情報") {
+    
     $_SESSION["name"] = "";
     $_SESSION["email"] = "";
+	$_SESSION["name"] = $_POST["name"];
+	$_SESSION["email"] = $_POST["email"];
+	$name = $_POST["name"];
+	$email = $_POST["email"];
 
-    $_SESSION["name"] = $_POST["name"];
-    $_SESSION["email"] = $_POST["email"];
-      //function validation(name)で関数化
-    if ($_POST["name"] == '') { //nameが入力されていない
-        $error1 = "名前が入力されてません";  // 処理を記述
-    } elseif (mb_strlen($_POST["name"]) >= 10) { //nameが入力されている
-        $error2 = "10文字以上入力されています";  // 処理を記述
-    }
-      //function validation(email)で関数化
-    if ($_POST["email"] == '') {  //emailが入力されていない
-        $error3 = "E-mailが入力されてません";  // 処理を記述
-    } elseif (mb_strlen($_POST["email"]) >= 30) { //nameが入力されている
-        $error2 = "10文字以上入力されています";  // 処理を記述
-    }
+//name属性のバリデーリョン
+function validation_name($name) {
+	$errorName = array();
+    
+    //blankのバリデーション
+	if (empty($name)) { 
+	    $errorName[] = "名前が入力されてません";
+	}
+    
+    //文字数のバリデーション
+	if (mb_strlen($name) >= 10) { 
+	    $errorName[] = "10文字以上入力されています";
+	}
+	return $errorName;
+}
+$errorName[] = validation_name($name);
 
-    if ($_POST["name"] != '' &&
-        mb_strlen($_POST["name"]) <= 9 &&
-        $_POST["email"] != '' &&
-        mb_strlen($_POST["email"]) <= 29)
-    {
-        header('Location: confirm.php');
-        exit;
-    }
+//E-mail属性のバリデーション
+function validation_email($email) {
+	$errorEmail = array();
+	//blankのバリデーション
+	if (empty($email)) {
+	$errorEmail = "E-mailが入力されてません";
+	}
+	//文字数のバリデーション
+	if (mb_strlen($email) >= 30) {
+	$errorEmail = "30文字以上入力されています";
+	}
+	return $errorEmail;
+}
+$errorEmail[] = validation_email($email);
+
+//エラーがなければ確認画面へ
+if (validation_name($name) == false &&
+	validation_email($email) == false)
+	{
+	header('Location: confirm.php');
+	exit;
+}
 }
 ?>
 

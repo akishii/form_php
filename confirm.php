@@ -18,6 +18,6 @@ session_start();
               <form method="post" action="complete.php">
                 <input type="submit" value="確定">
               </form>
-              
+
 </body>
 </html>
